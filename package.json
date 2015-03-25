@@ -4,8 +4,22 @@
   "description": "create github tags",
   "main": "index.js",
   "dependencies": {
+    "ampersand-class-extend": "^1.0.1",
+    "babel": "^4.7.16",
     "bunsen": "^5.11.0",
-    "dibs-gulp-helpers": "^1.0.5"
+    "colors": "^1.0.3",
+    "commander": "^2.7.1",
+    "dibs-gulp-helpers": "^1.0.5",
+    "escape-regexp-component": "^1.0.2",
+    "expand-tilde": "^1.2.0",
+    "github": "^0.2.3",
+    "inquirer": "^0.8.2",
+    "isnumeric": "^0.1.5",
+    "lodash.assign": "^3.0.0",
+    "lodash.partial": "^3.0.0",
+    "repeat-string": "^1.5.0",
+    "sprintf": "^0.1.5",
+    "sync-exec": "^0.5.0"
   },
   "devDependencies": {},
   "scripts": {

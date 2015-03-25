@@ -1,0 +1,12 @@
+#! /usr/bin/env node
+
+'use strict';
+
+var path = require('path');
+var escapeRE = require('escape-regexp-component');
+
+require('babel/register')({
+    ignore: new RegExp('^' + escapeRE(path.resolve(__dirname, '..')) + '.node_modules')
+});
+
+require('../index');
