@@ -1,0 +1,20 @@
+{
+  "name": "tagman",
+  "version": "1.0.0",
+  "description": "create github tags",
+  "main": "index.js",
+  "dependencies": {
+    "bunsen": "^5.11.0",
+    "dibs-gulp-helpers": "^1.0.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "tag",
+    "github"
+  ],
+  "author": "dale tan",
+  "license": "ISC"
+}
