@@ -21,9 +21,13 @@
     "sprintf": "^0.1.5",
     "sync-exec": "^0.5.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^2.1.2",
+    "mocha": "^2.2.1",
+    "mocha-traceur": "^2.1.0"
+  },
   "scripts": {
-    "test": "npm test"
+    "test": "./node_modules/mocha/bin/mocha --compilers js:mocha-traceur tests/**/*.js"
   },
   "keywords": [
     "tag",

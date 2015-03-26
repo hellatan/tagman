@@ -12,6 +12,7 @@ var sprintf = require('sprintf');
 var confirm = require('../lib/confirm');
 var options = require('../lib/options');
 var log = require('../lib/log');
+var versionHelpers = require('../lib/versionHelpers');
 
 var Repo = module.exports = function () {};
 
@@ -41,6 +42,14 @@ assign(Repo.prototype, {
 
     getDirectory() {
         return expandTilde(this.location);
+    },
+    createTag(version) {
+        this.ensureUpstream();
+        this.checkoutBranch('v' + version);
+        this.updateBranch('v' + version);
+
+        var semverVals = '';
+
     },
     getTags(major) {
         // -n numeric sort

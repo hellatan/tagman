@@ -21,7 +21,7 @@ options.setUp(program);
 
 version = program.args[0];
 
-return bunsen.getTags(5);
+return bunsen.createTag(version);
 //
 //[
 //    bunsen
