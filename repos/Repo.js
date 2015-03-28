@@ -45,20 +45,42 @@ assign(Repo.prototype, {
     },
     createTag(version) {
         this.ensureUpstream();
-        this.checkoutBranch('v' + version);
-        this.updateBranch('v' + version);
+        //this.checkoutBranch('v' + version);
+        //this.updateBranch('v' + version);
 
         var semverVals = '';
 
+        var tags = this.getLastTag(version);
+
+
     },
-    getTags(major) {
+    /**
+     *
+     * @param {string} version major.minor string
+     * @returns {*}
+     */
+    getLastTag(version) {
+        var semVerVals = versionHelpers.getSemVerVals(version);
+        var major = semVerVals[0];
         // -n numeric sort
         // -r reverse
         // -t separator/delimiter
         // -k key start position[, end position]
+        var listOfTags = this.exec(sprintf('git tag -l %s.* | sort -n -r -t. -k1,1 -k2,2 -k3,3', major));
+        // is this too much of an assumption?
+        var tags = listOfTags.stdout.split('\n');
+        // in reverse order already
+        var lastTag = tags[0];
+        console.log('list of tags: ', lastTag);
+        return lastTag;
+    },
+    getTags(version) {
         console.log('location: ', this.location);
-        var tags = this.exec(sprintf('git tag -l %s.* | sort -n -r -t. -k1,1 -k2,2 -k3,3 -k4,4', major))
-        console.log(tags.stdout);
+        var semVerVals = versionHelpers.getSemVerVals(version);
+        var major = semVerVals[0];
+        var listOfTags = this.exec(sprintf('git tag -l %s.* | sort -n -r -t. -k1,1 -k2,2 -k3,3 -k4,4', major))
+        var lastTag = listOfTags ? listOfTags.stdout.split('\n') : null;
+        console.log('last tag: ', lastTag);
     },
     push(branch, remote) {
         return confirm(sprintf('Push %s to %s?', branch, remote), () => {

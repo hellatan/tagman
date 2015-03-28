@@ -9,6 +9,7 @@
 var options = require('./lib/options');
 var program = require('commander');
 var bunsen = require('./repos/bunsen');
+var versionHelpers = require('./lib/versionHelpers');
 var version;
 
 program
@@ -20,6 +21,8 @@ program
 options.setUp(program);
 
 version = program.args[0];
+
+versionHelpers.validateVersion(version);
 
 return bunsen.createTag(version);
 //
