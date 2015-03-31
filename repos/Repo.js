@@ -12,20 +12,20 @@ var sprintf = require('sprintf');
 var confirm = require('../lib/confirm');
 var options = require('../lib/options');
 var log = require('../lib/log');
-var versionHelpers = require('../lib/versionHelpers');
+var tags = require('../lib/tags');
 
 var Repo = module.exports = function () {};
 
 assign(Repo.prototype, {
     gitCommitPrefix() {
-        return '✄👷';
+        return '✔ ';
     },
     exec(cmd, options) {
         options = options || {};
         if (!options.cwd) {
+            // how to make get `this.location` better??
             options.cwd = this.getDirectory();
         }
-        console.log('options: ', options);
         return exec(cmd, options);
     },
 
@@ -43,45 +43,34 @@ assign(Repo.prototype, {
     getDirectory() {
         return expandTilde(this.location);
     },
-    createTag(version) {
+
+    checkTag(version) {
+        var self = this;
         this.ensureUpstream();
-        //this.checkoutBranch('v' + version);
-        //this.updateBranch('v' + version);
+        this.checkoutBranch('v' + version);
+        this.updateBranch('v' + version);
 
-        var semverVals = '';
+        tags.setLocation(this.getDirectory());
 
-        var tags = this.getLastTag(version);
+        var tag = tags.checkTags(version);
 
+        tag.then(
+            function (result) {
+                console.log('result: ',result)
+                self.createTag(result.version);
+            },
+            function (err) {
+                console.log('tag:: :', err);
+                self.handleBadTag(err);
+            }
+        )['catch'](function (e) {
+                log.errLog('Tagging error', e);
+                process.exit(1);
+            }
+        );
 
     },
-    /**
-     *
-     * @param {string} version major.minor string
-     * @returns {*}
-     */
-    getLastTag(version) {
-        var semVerVals = versionHelpers.getSemVerVals(version);
-        var major = semVerVals[0];
-        // -n numeric sort
-        // -r reverse
-        // -t separator/delimiter
-        // -k key start position[, end position]
-        var listOfTags = this.exec(sprintf('git tag -l %s.* | sort -n -r -t. -k1,1 -k2,2 -k3,3', major));
-        // is this too much of an assumption?
-        var tags = listOfTags.stdout.split('\n');
-        // in reverse order already
-        var lastTag = tags[0];
-        console.log('list of tags: ', lastTag);
-        return lastTag;
-    },
-    getTags(version) {
-        console.log('location: ', this.location);
-        var semVerVals = versionHelpers.getSemVerVals(version);
-        var major = semVerVals[0];
-        var listOfTags = this.exec(sprintf('git tag -l %s.* | sort -n -r -t. -k1,1 -k2,2 -k3,3 -k4,4', major))
-        var lastTag = listOfTags ? listOfTags.stdout.split('\n') : null;
-        console.log('last tag: ', lastTag);
-    },
+
     push(branch, remote) {
         return confirm(sprintf('Push %s to %s?', branch, remote), () => {
             this.log('pushing %s %s', remote, branch);

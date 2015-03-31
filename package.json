@@ -6,10 +6,8 @@
   "dependencies": {
     "ampersand-class-extend": "^1.0.1",
     "babel": "^4.7.16",
-    "bunsen": "^5.11.0",
     "colors": "^1.0.3",
     "commander": "^2.7.1",
-    "dibs-gulp-helpers": "^1.0.5",
     "escape-regexp-component": "^1.0.2",
     "expand-tilde": "^1.2.0",
     "github": "^0.2.3",

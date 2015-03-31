@@ -24,7 +24,7 @@ version = program.args[0];
 
 versionHelpers.validateVersion(version);
 
-return bunsen.createTag(version);
+return bunsen.checkTag(version);
 //
 //[
 //    bunsen
