@@ -38,6 +38,22 @@ describe('tags', function () {
             expect(tagData.error).to.equal('patch version missing from 5.16. Current patch is 1');
             expect(tagData.errorType).to.equal(tags.errorTypes.MISSING_PATCH);
         });
+        it('should throw a `VERSIONS["MAJOR_TOO_LOW"]` error', function () {
+            var prevTag = '5.16.2';
+            var version = '4.16.1';
+            var tagData = tags.compareTags(version, prevTag);
+            expect(tagData.error).to.be.a('string');
+            expect(tagData.error).to.equal('MAJOR_TOO_LOW: 4 for 4.16.1 must be higher than 5');
+            expect(tagData.errorType).to.equal(tags.errorTypes.VERSIONS[0]);
+        });
+        it('should throw a `VERSIONS["MINOR_TOO_LOW"]` error', function () {
+            var prevTag = '5.16.2';
+            var version = '5.15.1';
+            var tagData = tags.compareTags(version, prevTag);
+            expect(tagData.error).to.be.a('string');
+            expect(tagData.error).to.equal('MINOR_TOO_LOW: 15 for 5.15.1 must be higher than 16');
+            expect(tagData.errorType).to.equal(tags.errorTypes.VERSIONS[1]);
+        });
         it('should throw a `VERSIONS["PATCH_TOO_LOW"]` error', function () {
             var prevTag = '5.16.2';
             var version = '5.16.1';
